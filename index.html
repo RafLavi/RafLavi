@@ -1,153 +1,473 @@
 
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#081a36">
+<meta name="theme-color" content="#07162f">
 <title>RafLavi World</title>
 <style>
+:root{
+  --navy:#07162f;
+  --blue:#102b50;
+  --gold:#e7bc65;
+  --white:#f8f9fd;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#07162e;color:white;font-family:Arial,sans-serif}
-header{background:#0b2042;text-align:center;padding:25px 12px;border-bottom:2px solid #d7ad57}
-.logo{font-size:43px;color:#e5bc65;font-weight:bold}
-h1{font-size:26px;color:#e5bc65;margin:8px}
-p{line-height:1.5}
-.gold{color:#e5bc65}
-nav{display:flex;overflow-x:auto;background:#10294e;padding:10px;gap:8px}
-button{background:#d7ad57;color:#07162e;border:0;border-radius:10px;padding:12px;font-weight:bold;cursor:pointer}
-nav button{white-space:nowrap}
-main{max-width:650px;margin:auto;padding:18px}
-.card{background:#112a4e;border:1px solid #365174;border-radius:17px;padding:18px;margin:15px 0}
-h2{color:#e5bc65}
-input,textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #61738b;border-radius:9px;background:#edf2fa;color:#111;font-size:16px}
-textarea{min-height:95px}
-.hidden{display:none}
-.post{background:#1a385c;padding:14px;border-radius:12px;margin-top:12px;overflow-wrap:anywhere}
-.small{font-size:13px;color:#b9c9dd}
-footer{text-align:center;padding:25px;color:#d7ad57}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--navy);
+  color:white;
+}
+header{
+  padding:20px;
+  text-align:center;
+  background:linear-gradient(135deg,#07162f,#173d6a);
+  border-bottom:1px solid #a98542;
+}
+.logo{
+  width:76px;height:76px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  margin:auto;
+  color:var(--gold);
+  font-size:30px;
+  font-weight:bold;
+  box-shadow:0 0 22px #e7bc6540;
+}
+h1{color:var(--gold);margin:12px 0 4px}
+.subtitle{color:#ccd6e5;font-size:14px}
+nav{
+  display:flex;
+  overflow-x:auto;
+  background:#0d2445;
+  padding:10px;
+  gap:7px;
+}
+button{
+  border:0;
+  border-radius:12px;
+  padding:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+nav button{
+  background:#19375b;
+  color:white;
+  flex-shrink:0;
+}
+nav button.active{
+  background:var(--gold);
+  color:#07162f;
+}
+main{
+  max-width:650px;
+  margin:auto;
+  padding:18px 15px 90px;
+}
+section{display:none}
+section.active{display:block}
+.card{
+  background:linear-gradient(145deg,#122e53,#0b203e);
+  border:1px solid #355073;
+  padding:18px;
+  margin-bottom:16px;
+  border-radius:18px;
+}
+h2,h3{color:var(--gold)}
+input,textarea,select{
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #536784;
+  background:#07182f;
+  color:white;
+  font:inherit;
+}
+textarea{min-height:100px;resize:vertical}
+.gold{
+  background:linear-gradient(120deg,#d9a84c,#ffe0a0);
+  color:#07162f;
+}
+.secondary{
+  background:#244468;
+  color:white;
+}
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.post{
+  background:#10294a;
+  border-radius:15px;
+  padding:15px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+.post small{color:#aebfd5}
+.post p{white-space:pre-wrap}
+.post img,.post video{
+  width:100%;
+  max-height:350px;
+  object-fit:contain;
+  border-radius:12px;
+  margin-top:10px;
+}
+.avatar{
+  display:inline-grid;
+  place-items:center;
+  width:42px;height:42px;
+  border-radius:50%;
+  background:#d6ae61;
+  color:#07162f;
+  font-weight:bold;
+}
+.muted{color:#bdcce0;font-size:14px}
+.stat{
+  display:inline-block;
+  margin:8px;
+  color:var(--gold);
+}
+footer{
+  text-align:center;
+  padding:22px;
+  color:#a9b9ce;
+  font-size:12px;
+}
 </style>
 </head>
 <body>
+
 <header>
-<div class="logo">RL 🌐</div>
-<h1>RafLavi World</h1>
-<p>Connect • Share • Discover</p>
-<p class="gold">O lume. O comunitate. Posibilități fără granițe.</p>
+  <div class="logo">RL🌐</div>
+  <h1>RafLavi World</h1>
+  <div class="subtitle">
+    One World. Endless Connections.
+  </div>
 </header>
-<nav>
-<button onclick="show('home')">🏠 Acasă</button>
-<button onclick="show('posts')">📝 Postări</button>
-<button onclick="show('videos')">🎬 Video</button>
-<button onclick="show('messages')">💬 Mesaje</button>
-<button onclick="show('jobs')">🌍 Oportunități</button>
-<button onclick="show('profile')">👤 Profil</button>
+
+<nav id="navigation">
+  <button class="active" onclick="showPage('home',this)">Home</button>
+  <button onclick="showPage('videos',this)">Videos</button>
+  <button onclick="showPage('messages',this)">Messages</button>
+  <button onclick="showPage('explore',this)">Explore</button>
+  <button onclick="showPage('opportunities',this)">Opportunities</button>
+  <button onclick="showPage('profile',this)">Profile</button>
 </nav>
+
 <main>
-<section id="home">
-<div class="card">
-<h2>Bine ai venit la RafLavi World!</h2>
-<p>Un spațiu internațional unde oamenii se pot conecta, împărtăși idei și descoperi oportunități.</p>
-<button onclick="show('posts')">Explorează comunitatea</button>
-</div>
-<div class="card">
-<h2>🌍 Pentru întreaga lume</h2>
-<p>Indiferent de țară, limbă sau naționalitate, RafLavi World este pentru toți.</p>
-</div>
+
+<section id="home" class="active">
+  <div class="card">
+    <h2>Welcome to RafLavi World</h2>
+    <p>Connect, share, discover and grow with people around the world.</p>
+    <p class="muted">Your global community starts here.</p>
+  </div>
+
+  <div class="card">
+    <h3>Create a Post</h3>
+    <textarea id="postText" placeholder="What's on your mind?"></textarea>
+    <input id="postFile" type="file" accept="image/*,video/*">
+    <button class="gold" onclick="createPost()">Publish Post</button>
+  </div>
+
+  <h2>Community Feed</h2>
+  <div id="feed"></div>
 </section>
 
-<section id="posts" class="hidden">
-<div class="card">
-<h2>📝 Comunitate</h2>
-<textarea id="postText" placeholder="Ce dorești să împărtășești?"></textarea>
-<button onclick="addPost()">Publică</button>
-<div id="postList"></div>
-</div>
+<section id="videos">
+  <div class="card">
+    <h2>World Videos</h2>
+    <p>Discover videos shared by the community.</p>
+    <p class="muted">Video uploads are available in the demo feed.</p>
+  </div>
+  <div id="videoFeed"></div>
 </section>
 
-<section id="videos" class="hidden">
-<div class="card">
-<h2>🎬 Videoclipuri</h2>
-<p>Aici va apărea comunitatea video RafLavi World.</p>
-<p class="small">Încărcarea videoclipurilor va fi disponibilă într-o versiune viitoare.</p>
-</div>
+<section id="messages">
+  <div class="card">
+    <h2>Messages</h2>
+    <p>Start a conversation.</p>
+    <input id="contactName" placeholder="Contact name">
+    <textarea id="messageText" placeholder="Write a message"></textarea>
+    <button class="gold" onclick="sendMessage()">Send Message</button>
+    <p class="muted">Demo messages are saved on this device only. They are not delivered to other people.</p>
+  </div>
+  <div id="messageList"></div>
 </section>
 
-<section id="messages" class="hidden">
-<div class="card">
-<h2>💬 Mesaje</h2>
-<p>În viitor vei putea conversa cu oameni din întreaga lume.</p>
-<p class="small">Mesageria între utilizatori nu este încă activă.</p>
-</div>
+<section id="explore">
+  <div class="card">
+    <h2>Explore the World</h2>
+    <p>Discover people, cultures, ideas and communities.</p>
+    <input id="searchText" placeholder="Search community posts">
+    <button class="gold" onclick="searchPosts()">Search</button>
+  </div>
+  <div id="searchResults"></div>
 </section>
 
-<section id="jobs" class="hidden">
-<div class="card">
-<h2>🌍 Oportunități internaționale</h2>
-<p>Descoperă viitoare anunțuri de locuri de muncă, afaceri, servicii și colaborări.</p>
-<button onclick="alert('Această funcție este în pregătire.')">Explorează</button>
-</div>
+<section id="opportunities">
+  <div class="card">
+    <h2>Global Opportunities</h2>
+    <p>Discover jobs, services, businesses and new possibilities.</p>
+    <select id="opportunityType">
+      <option>Jobs</option>
+      <option>Business</option>
+      <option>Services</option>
+      <option>Education</option>
+      <option>Housing</option>
+    </select>
+    <input id="opportunityTitle" placeholder="Opportunity title">
+    <textarea id="opportunityDescription" placeholder="Description"></textarea>
+    <button class="gold" onclick="addOpportunity()">Add Opportunity</button>
+  </div>
+  <div id="opportunityList"></div>
 </section>
 
-<section id="profile" class="hidden">
-<div class="card">
-<h2>👤 Profilul meu</h2>
-<input id="username" placeholder="Numele tău">
-<input id="country" placeholder="Țara ta">
-<button onclick="saveProfile()">Salvează profilul</button>
-<p id="profileInfo"></p>
-<p class="small">Profil demonstrativ salvat doar pe acest dispozitiv.</p>
-</div>
+<section id="profile">
+  <div class="card">
+    <h2>My Profile</h2>
+    <div class="avatar">RL</div>
+    <p>Welcome to your personal space.</p>
+    <input id="profileName" placeholder="Your display name">
+    <input id="profileCountry" placeholder="Your country">
+    <textarea id="profileBio" placeholder="Tell the world about yourself"></textarea>
+    <button class="gold" onclick="saveProfile()">Save Profile</button>
+    <p id="profileStatus" class="muted"></p>
+  </div>
+
+  <div class="card">
+    <h3>Account</h3>
+    <p>Free Community Access</p>
+    <span class="stat">Global</span>
+    <span class="stat">Creative</span>
+    <span class="stat">Connected</span>
+    <p class="muted">Real sign-in and premium accounts will be added in a future version.</p>
+  </div>
 </section>
+
 </main>
-<footer>© 2026 RafLavi World</footer>
+
+<footer>
+  RafLavi World © 2026<br>
+  Connecting the World
+</footer>
+
 <script>
-function show(id){
-document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-window.scrollTo(0,0);
+const KEY="raflavi_demo_";
+function readData(name){
+  try{
+    return JSON.parse(localStorage.getItem(KEY+name))||[];
+  }catch(e){return []}
 }
-function getPosts(){
-try{return JSON.parse(localStorage.getItem('rlposts')||'[]')}
-catch(e){return []}
+function saveData(name,value){
+  try{
+    localStorage.setItem(KEY+name,JSON.stringify(value));
+    return true;
+  }catch(e){
+    alert("Storage is full or unavailable.");
+    return false;
+  }
+}
+function showPage(id,button){
+  document.querySelectorAll("main section").forEach(s=>{
+    s.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>{
+    b.classList.remove("active");
+  });
+  button.classList.add("active");
+  window.scrollTo(0,0);
+}
+function element(tag,text,className){
+  const el=document.createElement(tag);
+  if(text!==undefined)el.textContent=text;
+  if(className)el.className=className;
+  return el;
+}
+function createPost(){
+  const text=document.getElementById("postText").value.trim();
+  const file=document.getElementById("postFile").files[0];
+  if(!text&&!file){
+    alert("Write something or select a file.");
+    return;
+  }
+  if(file&&file.size>1000000){
+    alert("For this demo, select a file smaller than 1 MB.");
+    return;
+  }
+  const finish=(media,type)=>{
+    const posts=readData("posts");
+    posts.unshift({
+      id:Date.now(),
+      text:text,
+      media:media||"",
+      type:type||"",
+      likes:0,
+      date:new Date().toLocaleString()
+    });
+    if(saveData("posts",posts)){
+      document.getElementById("postText").value="";
+      document.getElementById("postFile").value="";
+      renderPosts();
+    }
+  };
+  if(file){
+    const reader=new FileReader();
+    reader.onload=()=>finish(reader.result,file.type);
+    reader.readAsDataURL(file);
+  }else finish("","");
 }
 function renderPosts(){
-let list=document.getElementById('postList');
-list.textContent='';
-getPosts().forEach(p=>{
-let div=document.createElement('div');
-div.className='post';
-div.textContent=p;
-list.appendChild(div);
-});
+  const posts=readData("posts");
+  const feed=document.getElementById("feed");
+  const videos=document.getElementById("videoFeed");
+  feed.replaceChildren();
+  videos.replaceChildren();
+  if(!posts.length){
+    feed.append(element("p","No posts yet. Be the first to share!","muted"));
+  }
+  for(const post of posts){
+    const card=element("div",undefined,"post");
+    card.append(element("strong","RafLavi Member"));
+    card.append(element("small"," · "+post.date));
+    if(post.text)card.append(element("p",post.text));
+    if(post.media&&post.type.startsWith("image/")){
+      const img=document.createElement("img");
+      img.src=post.media;
+      img.alt="Community upload";
+      card.append(img);
+    }
+    if(post.media&&post.type.startsWith("video/")){
+      const video=document.createElement("video");
+      video.src=post.media;
+      video.controls=true;
+      card.append(video);
+    }
+    const actions=element("div",undefined,"actions");
+    const like=element("button","♡ Like ("+(post.likes||0)+")","secondary");
+    like.onclick=()=>{
+      const all=readData("posts");
+      const item=all.find(p=>p.id===post.id);
+      if(item){item.likes=(item.likes||0)+1;saveData("posts",all);renderPosts();}
+    };
+    const remove=element("button","Delete","secondary");
+    remove.onclick=()=>{
+      if(confirm("Delete this demo post?")){
+        saveData("posts",readData("posts").filter(p=>p.id!==post.id));
+        renderPosts();
+      }
+    };
+    actions.append(like,remove);
+    card.append(actions);
+    feed.append(card);
+    if(post.type&&post.type.startsWith("video/")){
+      videos.append(card.cloneNode(true));
+      const copy=videos.lastElementChild;
+      const buttons=copy.querySelector(".actions");
+      if(buttons)buttons.remove();
+    }
+  }
+  if(!videos.children.length){
+    videos.append(element("p","No videos yet.","muted"));
+  }
 }
-function addPost(){
-let input=document.getElementById('postText');
-let value=input.value.trim();
-if(!value)return alert('Scrie mai întâi un mesaj.');
-let posts=getPosts();
-posts.unshift(value);
-localStorage.setItem('rlposts',JSON.stringify(posts));
-input.value='';
-renderPosts();
+function sendMessage(){
+  const name=document.getElementById("contactName").value.trim();
+  const text=document.getElementById("messageText").value.trim();
+  if(!name||!text){
+    alert("Enter a contact and message.");
+    return;
+  }
+  const messages=readData("messages");
+  messages.unshift({name,text,date:new Date().toLocaleString()});
+  if(saveData("messages",messages)){
+    document.getElementById("messageText").value="";
+    renderMessages();
+  }
+}
+function renderMessages(){
+  const list=document.getElementById("messageList");
+  list.replaceChildren();
+  for(const msg of readData("messages")){
+    const card=element("div",undefined,"card");
+    card.append(element("h3",msg.name));
+    card.append(element("p",msg.text));
+    card.append(element("small",msg.date));
+    list.append(card);
+  }
+}
+function searchPosts(){
+  const query=document.getElementById("searchText").value.toLowerCase().trim();
+  const results=document.getElementById("searchResults");
+  results.replaceChildren();
+  const matches=readData("posts").filter(p=>
+    p.text.toLowerCase().includes(query)
+  );
+  for(const post of matches){
+    const card=element("div",undefined,"card");
+    card.append(element("p",post.text||"Media post"));
+    results.append(card);
+  }
+  if(!matches.length)results.append(element("p","No results found."));
+}
+function addOpportunity(){
+  const type=document.getElementById("opportunityType").value;
+  const title=document.getElementById("opportunityTitle").value.trim();
+  const description=document.getElementById("opportunityDescription").value.trim();
+  if(!title||!description){
+    alert("Complete the title and description.");
+    return;
+  }
+  const items=readData("opportunities");
+  items.unshift({type,title,description});
+  if(saveData("opportunities",items)){
+    document.getElementById("opportunityTitle").value="";
+    document.getElementById("opportunityDescription").value="";
+    renderOpportunities();
+  }
+}
+function renderOpportunities(){
+  const list=document.getElementById("opportunityList");
+  list.replaceChildren();
+  for(const item of readData("opportunities")){
+    const card=element("div",undefined,"card");
+    card.append(element("small",item.type));
+    card.append(element("h3",item.title));
+    card.append(element("p",item.description));
+    list.append(card);
+  }
 }
 function saveProfile(){
-let name=document.getElementById('username').value.trim();
-let country=document.getElementById('country').value.trim();
-localStorage.setItem('rlname',name);
-localStorage.setItem('rlcountry',country);
-displayProfile();
+  const profile={
+    name:document.getElementById("profileName").value.trim(),
+    country:document.getElementById("profileCountry").value.trim(),
+    bio:document.getElementById("profileBio").value.trim()
+  };
+  if(saveData("profile",profile)){
+    document.getElementById("profileStatus").textContent="Profile saved on this device.";
+  }
 }
-function displayProfile(){
-let name=localStorage.getItem('rlname')||'';
-let country=localStorage.getItem('rlcountry')||'';
-document.getElementById('username').value=name;
-document.getElementById('country').value=country;
-document.getElementById('profileInfo').textContent=name?'Bine ai venit, '+name+'! '+country:'';
+function loadProfile(){
+  let profile={};
+  try{profile=JSON.parse(localStorage.getItem(KEY+"profile"))||{}}
+  catch(e){}
+  document.getElementById("profileName").value=profile.name||"";
+  document.getElementById("profileCountry").value=profile.country||"";
+  document.getElementById("profileBio").value=profile.bio||"";
 }
 renderPosts();
-displayProfile();
+renderMessages();
+renderOpportunities();
+loadProfile();
 </script>
 </body>
 </html>
+
 
