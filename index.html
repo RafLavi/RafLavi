@@ -1,1 +1,153 @@
 
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081a36">
+<title>RafLavi World</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#07162e;color:white;font-family:Arial,sans-serif}
+header{background:#0b2042;text-align:center;padding:25px 12px;border-bottom:2px solid #d7ad57}
+.logo{font-size:43px;color:#e5bc65;font-weight:bold}
+h1{font-size:26px;color:#e5bc65;margin:8px}
+p{line-height:1.5}
+.gold{color:#e5bc65}
+nav{display:flex;overflow-x:auto;background:#10294e;padding:10px;gap:8px}
+button{background:#d7ad57;color:#07162e;border:0;border-radius:10px;padding:12px;font-weight:bold;cursor:pointer}
+nav button{white-space:nowrap}
+main{max-width:650px;margin:auto;padding:18px}
+.card{background:#112a4e;border:1px solid #365174;border-radius:17px;padding:18px;margin:15px 0}
+h2{color:#e5bc65}
+input,textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #61738b;border-radius:9px;background:#edf2fa;color:#111;font-size:16px}
+textarea{min-height:95px}
+.hidden{display:none}
+.post{background:#1a385c;padding:14px;border-radius:12px;margin-top:12px;overflow-wrap:anywhere}
+.small{font-size:13px;color:#b9c9dd}
+footer{text-align:center;padding:25px;color:#d7ad57}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">RL 🌐</div>
+<h1>RafLavi World</h1>
+<p>Connect • Share • Discover</p>
+<p class="gold">O lume. O comunitate. Posibilități fără granițe.</p>
+</header>
+<nav>
+<button onclick="show('home')">🏠 Acasă</button>
+<button onclick="show('posts')">📝 Postări</button>
+<button onclick="show('videos')">🎬 Video</button>
+<button onclick="show('messages')">💬 Mesaje</button>
+<button onclick="show('jobs')">🌍 Oportunități</button>
+<button onclick="show('profile')">👤 Profil</button>
+</nav>
+<main>
+<section id="home">
+<div class="card">
+<h2>Bine ai venit la RafLavi World!</h2>
+<p>Un spațiu internațional unde oamenii se pot conecta, împărtăși idei și descoperi oportunități.</p>
+<button onclick="show('posts')">Explorează comunitatea</button>
+</div>
+<div class="card">
+<h2>🌍 Pentru întreaga lume</h2>
+<p>Indiferent de țară, limbă sau naționalitate, RafLavi World este pentru toți.</p>
+</div>
+</section>
+
+<section id="posts" class="hidden">
+<div class="card">
+<h2>📝 Comunitate</h2>
+<textarea id="postText" placeholder="Ce dorești să împărtășești?"></textarea>
+<button onclick="addPost()">Publică</button>
+<div id="postList"></div>
+</div>
+</section>
+
+<section id="videos" class="hidden">
+<div class="card">
+<h2>🎬 Videoclipuri</h2>
+<p>Aici va apărea comunitatea video RafLavi World.</p>
+<p class="small">Încărcarea videoclipurilor va fi disponibilă într-o versiune viitoare.</p>
+</div>
+</section>
+
+<section id="messages" class="hidden">
+<div class="card">
+<h2>💬 Mesaje</h2>
+<p>În viitor vei putea conversa cu oameni din întreaga lume.</p>
+<p class="small">Mesageria între utilizatori nu este încă activă.</p>
+</div>
+</section>
+
+<section id="jobs" class="hidden">
+<div class="card">
+<h2>🌍 Oportunități internaționale</h2>
+<p>Descoperă viitoare anunțuri de locuri de muncă, afaceri, servicii și colaborări.</p>
+<button onclick="alert('Această funcție este în pregătire.')">Explorează</button>
+</div>
+</section>
+
+<section id="profile" class="hidden">
+<div class="card">
+<h2>👤 Profilul meu</h2>
+<input id="username" placeholder="Numele tău">
+<input id="country" placeholder="Țara ta">
+<button onclick="saveProfile()">Salvează profilul</button>
+<p id="profileInfo"></p>
+<p class="small">Profil demonstrativ salvat doar pe acest dispozitiv.</p>
+</div>
+</section>
+</main>
+<footer>© 2026 RafLavi World</footer>
+<script>
+function show(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+window.scrollTo(0,0);
+}
+function getPosts(){
+try{return JSON.parse(localStorage.getItem('rlposts')||'[]')}
+catch(e){return []}
+}
+function renderPosts(){
+let list=document.getElementById('postList');
+list.textContent='';
+getPosts().forEach(p=>{
+let div=document.createElement('div');
+div.className='post';
+div.textContent=p;
+list.appendChild(div);
+});
+}
+function addPost(){
+let input=document.getElementById('postText');
+let value=input.value.trim();
+if(!value)return alert('Scrie mai întâi un mesaj.');
+let posts=getPosts();
+posts.unshift(value);
+localStorage.setItem('rlposts',JSON.stringify(posts));
+input.value='';
+renderPosts();
+}
+function saveProfile(){
+let name=document.getElementById('username').value.trim();
+let country=document.getElementById('country').value.trim();
+localStorage.setItem('rlname',name);
+localStorage.setItem('rlcountry',country);
+displayProfile();
+}
+function displayProfile(){
+let name=localStorage.getItem('rlname')||'';
+let country=localStorage.getItem('rlcountry')||'';
+document.getElementById('username').value=name;
+document.getElementById('country').value=country;
+document.getElementById('profileInfo').textContent=name?'Bine ai venit, '+name+'! '+country:'';
+}
+renderPosts();
+displayProfile();
+</script>
+</body>
+</html>
+
